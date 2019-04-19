@@ -1,0 +1,20 @@
+#searchForm{
+	border: 5px solid #000;
+	padding: 10px;
+	border-radius: 15px;
+}
+
+.textField{
+	border: 2px solid #000;
+	border-radius: 10px;
+	margin: 5px;
+	width: 150px;
+	height: 30px;
+}
+
+#searchResults{
+	border: 5px solid #000;
+	padding: 10px;
+	margin-top: 10px;
+	border-radius: 15px;
+}

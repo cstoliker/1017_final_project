@@ -1,0 +1,205 @@
+<!-- INFSCI 1017 - Implementation of Information Systems, Spring 2019
+	Final Project, Caleb Stoliker, cas363 -->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Music Web Service</title>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> <!--Stylesheet for autocomplete -->
+  		<link rel="stylesheet" href="/resources/demos/style.css"> <!--Stylesheet for autocomplete -->
+  		<link rel="stylesheet" href="css/style.css" type="text/css"/>
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script> <!--jquery reference for auto correct -->
+  		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> <!--jquery reference for auto correct -->
+  		<script src="js/jquery-3.4.0.min.js"></script>
+  		
+  		<!-- The js script below was originally my auto correct code.
+  			This function failed once I added <script src="js/jquery-3.4.0.min.js"></script> above  -->
+  		<script>
+			$( function() {
+				var artistSearch = "artist";
+				var albumSearch = "album";
+				var songSearch = "song";
+				var searchChoice = document.getElementById("searchType").value;
+		    	var availableTags = [
+					"Aerosmith", "Abba", "Anthrax",
+				    "Bloodhound Gang", "Blondie",
+				    "Coldplay", "Coast", "Creed",
+				    "Dave Mathews Band", "Dio",
+				    "Elvis Presley", "Elvis Costello",
+					"Future", "Fergie", "Flo Rida",
+					"Gearhead", "Greenday", "Gary Numan",
+					"Hinder", "Halestrom",
+					"Iggy Azalea",
+					"Journey",
+					"Korn",
+					"Linkin Park",
+					"Metallica",
+					"Nonpoint",
+					"Otep",
+					"Pantera",
+				    "Queen"
+				];
+			    	
+			    $( "#search" ).autocomplete({
+			    	//I intend to include an if statement here to change the available tags depending on the search type
+			    	//however, I was not able to include an if statement here.  Still am unsure as to why
+			    		source: availableTags
+		    	});
+		  	});
+		</script>
+		
+		<!-- The below function clears the input box on click -->
+		
+		<script>
+			function clearTextBox() { //clear text function
+				document.getElementById("search").setAttribute("value", "");
+			}
+		</script>
+	</head>
+	
+	<body>
+		<div id = "searchForm">
+			<div>
+				<h1>Music Web Service Project</h1>
+			</div>
+	
+			<div>
+	
+				<input type="text" id="search" value="Search by..." onclick="clearTextBox();" class="textField">
+				
+				
+<!-- The below select field was intended to allow the use to choose between searching for artist, album and song -->				
+				<select id="searchType" class="textField">
+					<option value="artist" selected>Artist</option>
+					<option value="album">Album</option>
+					<option value="song">Song</option>
+				</select>
+					
+				<input type="button" id="btnSearch" name="Search" value="Submit" class="textField">
+			</div>
+		</div>
+		
+		<div id="searchResults">
+			<table>
+<!-- I wanted to dynamically create a table depending on what type of search the user was doing.
+	I was unsure how to do this -->
+				<tr>
+				<th>
+				</tr>
+			</table>
+		</div>
+	</body>
+	
+	<!-- this function is the script for single architecture search -->
+	<script>
+		$(document).ready(function (){
+			$("#btnSearch").click(function (){
+				var search = $("search").val();
+				var searchType = $("searchType").val();
+				if(searchType == "artist"){
+					var url = "ArtistListWS?firstName=" + search + "&searchType" + searchType;
+				} else if(searchType == "album"){
+					var url = "AlbumListWS?title=" + search + "&searchType" + searchType;
+				} else if(searchType =="song"){
+					var url = "SongListWS?title=" + search + "&searchType" + searchType;
+				}
+				$.get(url, function(response){
+					parseData(response);
+				})
+			});
+		});
+		
+//the below function is the logic for creating tables based on the search type
+		function parseData(data){
+			//$("#searchResults").text(JSON.stringify(data));
+			var result = "";
+			
+			if(searchtype = "artist"){
+				for(var i=0; i<data.length; i++){
+					var tr = $("<tr></tr>");
+					
+					//first data cell
+					var td = $("<td></td>");
+					var name = data[i].first_name + " " + data[i].last_name;
+					td.html(name);
+					tr.append(td);
+					
+					//second data cell
+					var td = $("<td></td>");
+					td.html(data[i].band_name);
+					tr.append(td);
+					
+					//third data cell
+					var td = $("<td></td>");
+					td.html(data[i].bio);
+					tr.append(td);
+					
+					//append row to table
+					$("tblSearchResults").append(tr);
+					//result += "Name: " + data[i].first_name + " " + data[i].last_name + " Band Name: " + data[i].band_name + " Bio: " + data[i].bio + "<br />";
+				}
+			} else if(searchtype = "album"){
+				for(var i=0; i<data.length; i++){
+					var tr = $("<tr></tr>");
+					
+					//first data cell
+					var td = $("<td></td>");
+					td.html(data[i].title);
+					tr.append(td);
+					
+					var td = $("<td></td>");
+					td.html(data[i].release_date);
+					tr.append(td);
+					
+					var td = $("<td></td>");
+					td.html(data[i].recording_company_name);
+					tr.append(td);
+					
+					var td = $("<td></td>");
+					td.html(data[i].number_of_tracks);
+					tr.append(td);
+					
+					var td = $("<td></td>");
+					td.html(data[i].pmrc_rating);
+					tr.append(td);
+					
+					var td = $("<td></td>");
+					td.html(data[i].length);
+					tr.append(td);
+					
+					$("tblSearchResults").append(tr);
+					//result += "Title: " + data[i].title + " Release Date: " + data[i].release_date + " Recording Company Name: " 
+					//+ data[i].recording_company_name + " Number of Tracks: " + data[i].number_of_tracks + " PMRC Rating: " 
+					//+ data[i].pmrc_rating + " Length: " + data[i].length + "<br />";
+				}
+			} else if(searchType = "song"){
+				for(var i=0; i<data.length; i++){
+					var tr = $("<tr></tr>");
+					
+					//first data cell
+					var td = $("<td></td>");
+					td.html(data[i].title);
+					tr.append(td);
+					
+					var td = $("<td></td>");
+					td.html(data[i].length);
+					tr.append(td);
+					
+					var td = $("<td></td>");
+					td.html(data[i].release_date);
+					tr.append(td);
+					
+					var td = $("<td></td>");
+					td.html(data[i].record_date);
+					tr.append(td);
+					
+					$("tblSearchResults").append(tr);
+					
+					//result += "Title: " + data[i].title + " Length: " + data[i].length + " Release Date: " + data[i].release_date 
+					//+ " Record Date: " + data[i].record_date + "<br />";
+				}
+			}
+			
+			//$("#searchResults").html(result);
+		}
+	</script>
+</html>
