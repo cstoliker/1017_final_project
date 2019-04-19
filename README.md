@@ -6,17 +6,17 @@ The project doesn't quite work and I can explain why. Currently the database isn
 
 Secondly, I did implement an autocomplete that was working initially, however it failed once I imported jquery-3.4.0.min.
 
-The folder should include:
-  index.html
-  Artist.java
-  ArtistManager.java
-  ArtistListWS.java
-  Album.java
-  AlbumManager.java
-  AlbumListWS.java
-  Song.java
-  SongManager.java
-  SongListWS.java
-  DbUtilities.java
-  style.css
-  jquery-3.4.0.min
+### The folder should include:
+ ###  index.html
+ ###  Artist.java
+ ###  ArtistManager.java
+ ###  ArtistListWS.java
+ ###  Album.java
+ ###  AlbumManager.java
+ ###  AlbumListWS.java
+###   Song.java
+ ###  SongManager.java
+ ###  SongListWS.java
+###   DbUtilities.java
+###   style.css
+ ###  jquery-3.4.0.min
